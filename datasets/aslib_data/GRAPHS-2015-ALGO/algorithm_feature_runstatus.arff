@@ -1,0 +1,12 @@
+@relation R_data_frame
+
+@attribute algorithm string
+@attribute repetition numeric
+@attribute code {ok,timeout,memout,crash,other,unknown}
+@attribute AST {ok,timeout,memout,crash,other,unknown}
+
+@data
+glasgow2,1,ok,ok
+lad,1,ok,ok
+supplementallad,1,ok,ok
+vf2,1,ok,ok
