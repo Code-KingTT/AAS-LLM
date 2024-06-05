@@ -1,0 +1,55 @@
+>>>algorithm_runs.arff    ：算法执行实例数据
+>>>citation.bib                ：引文文件，作者、问题标题、年份等
+>>>cv.arff                        ：交叉验证信息，表示在第几份数据上进行验证
+>>>description.txt           ：场景、测量指标、截止时间、截止内存
+>>>feature_costs.arff       ：计算成本
+>>>feature_runstatus.arff ：运行状态
+>>>feature_values.arff     ：特征数据
+>>>readme.txt                ：来源、作者、问题描述、截止时间、算法描述
+
+INPUT:
+
+{"conversations": [{"role": "system", "content": "你的任务是根据问题特征、问题在算法上的执行结果以及执行成本来综合考量选择出最合适的算法"},{"role": "user", "content": "问题特征：{占位符1}, 问题在算法上的执行结果：{占位符2}，执行成本：{占位符3}"}, {"role": "assistant", "content": "算法选择结果：<> | 选择依据：<首先分析本问题在该算法的执行结果中执行状态为<ok>，其次在所有执行状态为<ok>的算法中选择执行时间最短的，最后根据执行成本信息综合考虑选择算法<>>"}]}
+
+<任务描述>
+问题特征：{
+               		x:y
+			x:y
+                }
+<描述>
+执行状态：{
+               		x:y
+			x:y
+		}
+<描述>
+运行状态：{
+               		x:y
+			x:y
+		}
+<描述>
+成本状态：{
+               		x:y
+			x:y
+		}
+<描述>
+
+OUTPUT:
+选择算法：<> | 选择依据：<>
+选择依据：
+		{
+               		x:y
+			x:y
+		}
+
+
+
+
+
+
+
+
+
+{"conversations": [{"role": "system", "content": "你的任务是根据'''问题特征'''和'''问题在算法上的执行结果'''来综合考量选择出最合适的算法(即问题在算法上的执行结果中的algorithm字段值)，最重要的选择依据是问题能够被该算法正常执行(即runstatus为ok)，同时运行时间最短(即runtime最短)"},{"role": "user", "content": "问题特征：占位符1, 问题在算法上的执行结果：[占位符2]"}, {"role": "assistant", "content": "算法选择结果：<占位符3> | 选择依据：<首先分析本问题在该算法的执行结果中执行状态为<ok>，其次在所有执行状态为<ok>的算法中选择执行时间最短的，最后根据执行成本信息综合考虑选择算法<占位符3>>"}]}
+
+我需要你进行数据格式的整理，现在有两个待整理的json文件，文件名分别是feature_values.json和feature_runs.json，feature_runs.json中部分数据如下：[{"instance_id": "abscisic_bdeu-0.1-2", "algorithm": "astar-ec", "runtime": "7200.0", "runstatus": "memout"}, {"instance_id": "abscisic_bdeu-0.1-2", "algorithm": "astar-ed3", "runtime": "7200.0", "runstatus": "memout"}, feature_values.json中的格式与feature_runs.json中格式类似，我需要从这两个文件中分别按要求取出数据整理出一个新文件同样是json格式，具体格式如下：{"conversations": [{"role": "system", "content": "你的任务是根据'''问题特征'''和'''问题在算法上的执行结果'''来综合考量选择出最合适的算法(即问题在算法上的执行结果中的algorithm字段值)，最重要的选择依据是问题能够被该算法正常执行(即runstatus为ok)，同时运行时间最短(即runtime最短)"},{"role": "user", "content": "问题特征：{占位符1}, 问题在算法上的执行结果：{占位符2}"}, {"role": "assistant", "content": "算法选择结果：<> | 选择依据：<首先分析本问题在该算法的执行结果中执行状态为<ok>，其次在所有执行状态为<ok>的算法中选择执行时间最短的，最后根据执行成本信息综合考虑选择算法<>>"}]}，这个格式不需要换行，整个这一条在同一行，每两条之间也不需要其他符号分隔，具体从feature_values.json和feature_runs.json两个文件中取数据的方式如下：每次从feature_values.json中取1条数据，即一个{}，并放在占位符1的位置，再从feature_runs.json中取8条数据，即8个{}并用逗号分隔，放在占位符2的位置，最后是占位符3的替换，这个位置需要进行分析，具体是每次从feature_runs.json取的8条数据中runstatus字段为ok且runtime时间最短的一条数据中的algorithm字段值，这样就是一条完整的数据，最后再按顺序一直重复直至所有数据被转换，根据这样的要求给出python实现的代码
+
